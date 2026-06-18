@@ -1,0 +1,490 @@
+.app-shell {
+  --sidebar-width: 86px;
+}
+
+.tool-rail {
+  gap: 0.65rem;
+  overflow-x: hidden;
+  padding: 0.78rem 0.4rem 0.68rem;
+}
+
+.tool-brand {
+  position: relative;
+  overflow: hidden;
+  width: 2.55rem;
+  height: 2.55rem;
+  padding: 0;
+  border-radius: 0.82rem;
+  color: var(--sidebar-text, var(--app-text));
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--sidebar-bg-start) 78%, var(--workspace-bg-start) 22%) 0%,
+    color-mix(in srgb, var(--sidebar-bg-end) 66%, var(--workspace-range-fill) 34%) 52%,
+    color-mix(in srgb, var(--workspace-bg-end) 72%, var(--workspace-range-fill) 28%) 100%
+  );
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--sidebar-border-strong, var(--app-border-strong)) 74%,
+      var(--workspace-range-fill) 26%
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--sidebar-surface-hover-bg, white) 36%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--workspace-bg-start) 18%, transparent),
+    0 10px 22px color-mix(in srgb, var(--workspace-range-fill) 18%, transparent);
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    background 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.tool-brand:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--sidebar-surface-hover-bg, white) 42%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--workspace-bg-start) 24%, transparent),
+    0 12px 26px color-mix(in srgb, var(--workspace-range-fill) 24%, transparent);
+}
+
+.tool-brand:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--sidebar-focus-ring, var(--app-focus-ring)),
+    inset 0 1px 0 color-mix(in srgb, var(--sidebar-surface-hover-bg, white) 42%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--workspace-bg-start) 24%, transparent),
+    0 12px 26px color-mix(in srgb, var(--workspace-range-fill) 24%, transparent);
+}
+
+.tool-brand::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--sidebar-surface-hover-bg, white) 28%, transparent) 0%,
+    transparent 44%,
+    color-mix(in srgb, var(--workspace-range-fill) 12%, transparent) 100%
+  );
+  pointer-events: none;
+}
+
+.tool-brand-mark {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.05rem;
+  font-family: 'Trebuchet MS', 'Segoe UI Variable Text', 'Segoe UI', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.1em;
+  transition: transform 0.16s ease, filter 0.16s ease;
+  filter: drop-shadow(0 1px 0 color-mix(in srgb, var(--sidebar-surface-hover-bg, white) 26%, transparent));
+}
+
+.tool-brand:hover .tool-brand-mark {
+  transform: scale(1.03);
+}
+
+.tool-brand-mark--back {
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  letter-spacing: 0;
+}
+
+.tool-brand-mark-icon {
+  display: grid;
+  place-items: center;
+  width: 1.16rem;
+  height: 1.16rem;
+  color: color-mix(
+    in srgb,
+    var(--sidebar-text, var(--app-text)) 84%,
+    var(--workspace-range-fill) 16%
+  );
+  filter: drop-shadow(
+    0 1px 0 color-mix(in srgb, var(--sidebar-surface-hover-bg, white) 24%, transparent)
+  );
+}
+
+.tool-brand-mark-icon svg {
+  width: 1.16rem;
+  height: 1.16rem;
+  display: block;
+}
+
+.tool-brand-mark--back .tool-brand-mark-icon {
+  transform: translateX(-0.04rem);
+}
+
+.tool-brand-mark--back .tool-brand-mark-icon svg {
+  overflow: visible;
+}
+
+.tool-brand-mark--back .tool-brand-mark-icon svg path {
+  stroke-width: 2.55;
+}
+
+.tool-brand-mark-letter {
+  display: block;
+  paint-order: stroke fill;
+  -webkit-text-stroke: 0.045rem
+    color-mix(
+      in srgb,
+      var(--sidebar-border-strong, var(--app-border-strong)) 58%,
+      var(--workspace-bg-start) 42%
+    );
+  text-shadow:
+    0 1px 0 color-mix(in srgb, var(--sidebar-surface-hover-bg, white) 22%, transparent),
+    0 0 0.4rem color-mix(in srgb, var(--workspace-range-fill) 10%, transparent);
+}
+
+.tool-brand-mark-letter--base {
+  color: color-mix(
+    in srgb,
+    var(--sidebar-text, var(--app-text)) 82%,
+    var(--workspace-text, var(--app-text)) 18%
+  );
+}
+
+.tool-brand-mark-letter--accent {
+  color: color-mix(
+    in srgb,
+    var(--workspace-range-fill) 76%,
+    var(--sidebar-text, var(--app-text)) 24%
+  );
+}
+
+.tool-stack {
+  gap: 0.45rem;
+}
+
+.tool-divider {
+  margin-inline: 0.18rem;
+}
+
+.tool-button {
+  max-width: 3.25rem;
+  gap: 0.24rem;
+  padding: 0.36rem 0.06rem 0.28rem;
+  border-color: transparent;
+  background: transparent;
+  border-radius: 0.95rem;
+  transition:
+    background-color 0.16s ease,
+    box-shadow 0.16s ease,
+    color 0.16s ease;
+}
+
+.tool-button:hover {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--surface-bg) 78%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--app-border-strong) 42%, transparent);
+  transform: none;
+}
+
+.tool-button.is-active {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--surface-active-bg) 88%, transparent);
+  box-shadow: inset 0 0 0 1px var(--app-focus-ring);
+}
+
+.tool-button.is-disabled,
+.tool-button.is-disabled:hover {
+  background: transparent;
+  box-shadow: none;
+}
+
+.tool-icon {
+  width: 1.72rem;
+  height: 1.72rem;
+  border-radius: 0.62rem;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface-icon-start) 94%, transparent),
+      color-mix(in srgb, var(--surface-icon-end) 78%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--panel-inset) 92%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--app-border) 78%, transparent);
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    background 0.16s ease;
+}
+
+.tool-button:hover .tool-icon {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--panel-inset) 96%, transparent),
+    0 8px 18px color-mix(in srgb, var(--sidebar-glow) 48%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--app-border-strong) 56%, transparent);
+}
+
+.tool-button.is-active .tool-icon {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface-icon-start) 98%, var(--surface-active-bg) 2%),
+      color-mix(in srgb, var(--surface-active-bg) 76%, var(--surface-icon-end) 24%)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--panel-inset) 98%, transparent),
+    0 0 0 1px var(--app-focus-ring);
+}
+
+.tool-button.is-danger .tool-icon {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, #fff4f1 82%, var(--surface-icon-start) 18%),
+      color-mix(in srgb, #f6d9d1 34%, var(--surface-icon-end) 66%)
+    );
+}
+
+.tool-icon svg {
+  width: 1.14rem;
+  height: 1.14rem;
+}
+
+.tool-button-label {
+  font-size: 0.49rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.08;
+}
+
+.tool-sidebar-mode .tool-stack {
+  gap: 0.3rem;
+}
+
+.tool-sidebar-mode {
+  overflow-x: hidden;
+}
+
+.link-card {
+  min-height: 0;
+  cursor: pointer;
+}
+
+.card-link-body {
+  display: grid;
+  min-height: 0;
+}
+
+.link-url-frame {
+  width: 100%;
+  min-height: 0;
+  padding: 0.72rem 0.08rem 0.76rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.78rem;
+  cursor: default;
+}
+
+.link-url-input {
+  border: 1px solid var(--card-input-border, #1d2d281a);
+  background: var(--card-input-bg, rgba(248, 244, 236, 0.88));
+  min-height: 0;
+  padding: 0.85rem 0.95rem;
+  font-size: 0.98rem;
+  line-height: 1.35;
+  cursor: text;
+}
+
+.link-site-mark {
+  width: 1.6rem;
+  height: 1.6rem;
+  flex: 0 0 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.42rem;
+  background: color-mix(in srgb, var(--card-text, #1d2d28) 8%, transparent);
+  overflow: hidden;
+}
+
+.link-site-logo,
+.link-site-fallback {
+  width: 100%;
+  height: 100%;
+}
+
+.link-site-logo {
+  display: block;
+  object-fit: cover;
+}
+
+.link-site-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--card-text, #1d2d28);
+  font-size: 0.74rem;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.link-url-surface {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.link-url-display {
+  color: var(--card-text, #1d2d28);
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  font-size: 1.16rem;
+  font-weight: 800;
+  line-height: 1.4;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: inherit;
+  user-select: none;
+}
+
+.link-url-display.is-placeholder {
+  color: var(--card-placeholder, rgba(29, 45, 40, 0.42));
+  cursor: inherit;
+}
+
+.link-open-button {
+  appearance: none;
+  border: 1px solid color-mix(in srgb, var(--card-input-border, #1d2d281a) 88%, transparent);
+  background: color-mix(in srgb, var(--card-button-bg, rgba(248, 244, 236, 0.92)) 90%, transparent);
+  color: var(--card-button-text, var(--card-text, #1d2d28));
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 2rem;
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 32%, transparent);
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.link-open-button:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--card-accent, #176a8e) 24%,
+    var(--card-input-border, #1d2d281a) 76%
+  );
+  background: color-mix(
+    in srgb,
+    var(--card-button-bg, rgba(248, 244, 236, 0.92)) 84%,
+    var(--card-accent, #176a8e) 16%
+  );
+  color: var(--card-accent, #176a8e);
+}
+
+.link-open-button:focus-visible {
+  outline: none;
+  border-color: color-mix(
+    in srgb,
+    var(--card-accent, #176a8e) 36%,
+    var(--card-input-border, #1d2d281a) 64%
+  );
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--card-accent, #176a8e) 18%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 32%, transparent);
+}
+
+.link-open-button svg {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+}
+
+.tool-sidebar-mode .tool-button {
+  max-width: 3rem;
+  gap: 0.2rem;
+  padding: 0.3rem 0.05rem 0.24rem;
+}
+
+.tool-sidebar-mode .tool-icon {
+  width: 1.52rem;
+  height: 1.52rem;
+  border-radius: 0.56rem;
+}
+
+.tool-sidebar-mode .tool-icon svg {
+  width: 1.02rem;
+  height: 1.02rem;
+}
+
+.tool-sidebar-mode .tool-button-label {
+  font-size: 0.45rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+@media (width <= 980px) {
+  .app-shell {
+    --sidebar-width: 80px;
+  }
+}
+
+@media (width <= 640px) {
+  .app-shell {
+    --sidebar-width: 74px;
+  }
+
+  .tool-rail {
+    padding: 0.68rem 0.24rem 0.58rem;
+  }
+
+  .tool-brand {
+    width: 2.3rem;
+    height: 2.3rem;
+  }
+
+  .tool-brand-mark {
+    font-size: 0.88rem;
+  }
+
+  .tool-button {
+    max-width: 2.75rem;
+    padding: 0.28rem 0.05rem 0.2rem;
+  }
+
+  .tool-icon {
+    width: 1.58rem;
+    height: 1.58rem;
+  }
+
+  .tool-icon svg {
+    width: 1.06rem;
+    height: 1.06rem;
+  }
+
+  .tool-button-label {
+    font-size: 0.43rem;
+  }
+
+  .tool-sidebar-mode .tool-button {
+    max-width: 2.65rem;
+  }
+
+  .tool-sidebar-mode .tool-icon {
+    width: 1.42rem;
+    height: 1.42rem;
+  }
+
+  .tool-sidebar-mode .tool-button-label {
+    font-size: 0.41rem;
+  }
+}

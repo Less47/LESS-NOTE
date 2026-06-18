@@ -1,0 +1,209 @@
+.workspace-corner-tools {
+  gap: 0.72rem;
+}
+
+.workspace-switch,
+.workspace-zoom-control {
+  pointer-events: auto;
+  color: var(--workspace-text, var(--app-text));
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--workspace-border-strong, var(--app-border-strong)) 78%,
+      var(--workspace-range-fill, var(--range-fill)) 22%
+    );
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--workspace-panel-bg, var(--panel-bg)) 94%, var(--workspace-bg-start) 6%),
+    color-mix(in srgb, var(--workspace-switch-bg, var(--switch-bg)) 88%, var(--workspace-bg-end) 12%)
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--workspace-panel-inset, var(--panel-inset)) 100%, transparent),
+    0 12px 24px rgba(0, 0, 0, 0.18),
+    0 0 0 1px color-mix(in srgb, var(--workspace-bg-start) 8%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+  backdrop-filter: blur(18px) saturate(145%);
+  position: relative;
+}
+
+.workspace-switch:hover,
+.workspace-zoom-control:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--workspace-range-fill, var(--range-fill)) 42%,
+    var(--workspace-border-strong, var(--app-border-strong)) 58%
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--workspace-panel-inset, var(--panel-inset)) 100%, transparent),
+    0 14px 28px rgba(0, 0, 0, 0.22),
+    0 0 0 1px color-mix(in srgb, var(--workspace-range-fill, var(--range-fill)) 24%, transparent);
+}
+
+.workspace-switch:focus-visible,
+.workspace-zoom-control:focus-within {
+  border-color: color-mix(
+    in srgb,
+    var(--workspace-range-fill, var(--range-fill)) 54%,
+    var(--workspace-border-strong, var(--app-border-strong)) 46%
+  );
+  box-shadow:
+    0 0 0 2px var(--workspace-focus-ring, var(--app-focus-ring)),
+    inset 0 1px 0 color-mix(in srgb, var(--workspace-panel-inset, var(--panel-inset)) 100%, transparent),
+    0 14px 28px rgba(0, 0, 0, 0.22);
+}
+
+.workspace-switch-label,
+.workspace-zoom-label {
+  color: var(--workspace-text, var(--app-text));
+  letter-spacing: 0.14em;
+  font-weight: 900;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.workspace-switch {
+  gap: 0.62rem;
+  padding: 0.46rem 0.56rem 0.46rem 0.68rem;
+}
+
+.workspace-switch-track {
+  width: 2rem;
+  height: 1.08rem;
+  border: 1px solid
+    color-mix(in srgb, var(--workspace-border-strong, var(--app-border-strong)) 88%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--workspace-switch-track-off, var(--switch-track-off)) 88%,
+    var(--workspace-panel-bg, var(--panel-bg)) 12%
+  );
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+.workspace-switch-track.is-active {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--workspace-range-fill, var(--range-fill)) 90%, white 10%),
+    var(--workspace-switch-track-on, var(--switch-track-on))
+  );
+}
+
+.workspace-switch-thumb {
+  width: 0.74rem;
+  height: 0.74rem;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--workspace-switch-thumb, var(--switch-thumb)) 100%, white 0%),
+    color-mix(in srgb, var(--workspace-switch-thumb, var(--switch-thumb)) 86%, rgba(0, 0, 0, 0.14) 14%)
+  );
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
+}
+
+.workspace-switch[aria-checked='true'] .workspace-switch-thumb {
+  transform: translate(0.88rem);
+}
+
+.workspace-zoom-control {
+  grid-template-columns: auto minmax(6rem, 8rem) auto;
+  gap: 0.62rem;
+  padding: 0.46rem 0.6rem 0.46rem 0.72rem;
+}
+
+.workspace-zoom-range {
+  height: 0.42rem;
+  border: 1px solid
+    color-mix(in srgb, var(--workspace-border-strong, var(--app-border-strong)) 54%, transparent);
+  background: linear-gradient(
+    90deg,
+    var(--workspace-range-fill, var(--range-fill)) 0 var(--zoom-progress, 50%),
+    color-mix(
+        in srgb,
+        var(--workspace-range-track, var(--range-track)) 92%,
+        var(--workspace-panel-bg, var(--panel-bg)) 8%
+      )
+      var(--zoom-progress, 50%) 100%
+  );
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+.workspace-zoom-range::-webkit-slider-thumb {
+  width: 0.92rem;
+  height: 0.92rem;
+  border: 1px solid
+    color-mix(in srgb, var(--workspace-border-strong, var(--app-border-strong)) 72%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--workspace-range-fill, var(--range-fill)) 100%, white 0%),
+    color-mix(in srgb, var(--workspace-range-fill, var(--range-fill)) 84%, rgba(0, 0, 0, 0.18) 16%)
+  );
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.32);
+}
+
+.workspace-zoom-range::-moz-range-thumb {
+  width: 0.92rem;
+  height: 0.92rem;
+  border: 1px solid
+    color-mix(in srgb, var(--workspace-border-strong, var(--app-border-strong)) 72%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--workspace-range-fill, var(--range-fill)) 100%, white 0%),
+    color-mix(in srgb, var(--workspace-range-fill, var(--range-fill)) 84%, rgba(0, 0, 0, 0.18) 16%)
+  );
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.32);
+}
+
+.workspace-zoom-range::-moz-range-track {
+  height: 0.42rem;
+  background: color-mix(
+    in srgb,
+    var(--workspace-range-track, var(--range-track)) 92%,
+    var(--workspace-panel-bg, var(--panel-bg)) 8%
+  );
+}
+
+.workspace-zoom-value {
+  min-width: 3.15rem;
+  color: var(--workspace-text, var(--app-text));
+  background: color-mix(
+    in srgb,
+    var(--workspace-surface-hover-bg, var(--surface-hover-bg)) 88%,
+    transparent
+  );
+  border: 1px solid color-mix(in srgb, var(--workspace-border, var(--app-border)) 84%, transparent);
+  padding: 0.24rem 0.42rem;
+  font-size: 0.74rem;
+  font-weight: 900;
+  line-height: 1.1;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--workspace-panel-inset, var(--panel-inset)) 96%, transparent);
+}
+
+.workspace-zoom-value:hover {
+  color: var(--workspace-range-fill, var(--range-fill));
+  border-color: color-mix(
+    in srgb,
+    var(--workspace-range-fill, var(--range-fill)) 32%,
+    var(--workspace-border-strong, var(--app-border-strong)) 68%
+  );
+}
+
+@media (width <= 640px) {
+  .workspace-corner-tools {
+    gap: 0.48rem;
+  }
+
+  .workspace-switch,
+  .workspace-zoom-control {
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--workspace-panel-inset, var(--panel-inset)) 100%, transparent),
+      0 10px 20px rgba(0, 0, 0, 0.18);
+  }
+
+  .workspace-switch {
+    gap: 0.5rem;
+    padding: 0.38rem 0.46rem 0.38rem 0.56rem;
+  }
+
+  .workspace-zoom-control {
+    grid-template-columns: auto minmax(4.8rem, 6rem) auto;
+    gap: 0.48rem;
+    padding: 0.38rem 0.5rem 0.38rem 0.58rem;
+  }
+}

@@ -1,0 +1,158 @@
+.heading-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--heading-text, var(--app-text));
+  overflow: visible;
+}
+
+.heading-card.is-selected,
+.heading-card.is-connector-hovered,
+.heading-card.is-connector-source {
+  box-shadow: none;
+}
+
+.heading-shell {
+  min-height: 100%;
+  padding: 0.34rem 0.35rem 0.8rem;
+  display: grid;
+  align-content: start;
+  gap: 0.2rem;
+  background: transparent;
+  position: relative;
+  border-top: 0.22rem solid var(--heading-accent, transparent);
+  transition: background-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.heading-card.is-selected .heading-shell {
+  background: color-mix(in srgb, var(--workspace-contrast-line, #000000) 5%, transparent);
+  box-shadow:
+    0 0 0 2px var(--workspace-contrast-line, #000000),
+    0 0 0 5px color-mix(
+      in srgb,
+      var(--workspace-contrast-line, #000000) 18%,
+      transparent
+    );
+}
+
+.heading-card.is-connector-hovered .heading-shell {
+  background: rgba(25, 79, 71, 0.05);
+  box-shadow: 0 0 0 2px rgba(25, 79, 71, 0.34);
+}
+
+.heading-card.is-connector-source .heading-shell {
+  background: rgba(25, 79, 71, 0.08);
+  box-shadow: 0 0 0 2px var(--range-fill);
+}
+
+.heading-dragbar {
+  padding: 0.1rem 0.1rem 0;
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+.heading-card:hover .heading-dragbar,
+.heading-card.is-selected .heading-dragbar,
+.heading-card.is-connector-hovered .heading-dragbar,
+.heading-card.is-connector-source .heading-dragbar {
+  opacity: 0.84;
+}
+
+.heading-card .drag-dot {
+  background: var(--heading-handle, var(--app-muted-text));
+}
+
+.heading-card .card-note-editor {
+  width: 100%;
+  min-height: 3.1rem;
+  padding: 0;
+  color: var(--heading-text, var(--app-text));
+  font-family: 'Baskerville Old Face', 'Iowan Old Style', 'Palatino Linotype',
+    'Book Antiqua', Georgia, serif;
+  font-size: clamp(2.15rem, 3.8vw, 3.4rem);
+  font-weight: 600;
+  line-height: 0.94;
+  letter-spacing: -0.045em;
+}
+
+.heading-card .card-note-editor:empty:before {
+  color: var(--heading-placeholder, var(--heading-muted-text, var(--app-muted-text)));
+}
+
+.heading-card .card-note-editor p,
+.heading-card .card-note-editor ul,
+.heading-card .card-note-editor ol,
+.heading-card .card-note-editor blockquote,
+.heading-card .card-note-editor pre,
+.heading-card .card-note-editor h1,
+.heading-card .card-note-editor h2,
+.heading-card .card-note-editor h3 {
+  margin: 0 0 0.32rem;
+}
+
+.heading-card .card-note-editor p,
+.heading-card .card-note-editor ul,
+.heading-card .card-note-editor ol {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+
+.heading-card .card-note-editor h1,
+.heading-card .card-note-editor h2,
+.heading-card .card-note-editor h3 {
+  color: inherit;
+  font-family: inherit;
+  letter-spacing: inherit;
+}
+
+.heading-card .card-note-editor h1 {
+  font-size: clamp(2.55rem, 4.1vw, 3.85rem);
+  line-height: 0.9;
+}
+
+.heading-card .card-note-editor h2 {
+  font-size: clamp(2.25rem, 3.6vw, 3.1rem);
+  line-height: 0.92;
+}
+
+.heading-card .card-note-editor h3 {
+  font-size: clamp(1.95rem, 3.1vw, 2.72rem);
+  line-height: 0.96;
+}
+
+.heading-card .card-note-editor blockquote {
+  font-size: clamp(1.55rem, 2.55vw, 2.05rem);
+  line-height: 1.08;
+}
+
+.heading-card.is-column-child .card-note-editor {
+  font-size: clamp(1.7rem, 3vw, 2.55rem);
+}
+
+.heading-card.is-column-child .card-note-editor h1 {
+  font-size: clamp(2rem, 3.35vw, 2.95rem);
+}
+
+.heading-card.is-column-child .card-note-editor h2 {
+  font-size: clamp(1.8rem, 3vw, 2.55rem);
+}
+
+.heading-card.is-column-child .card-note-editor h3 {
+  font-size: clamp(1.55rem, 2.7vw, 2.15rem);
+}
+
+.heading-card.is-column-child .card-note-editor blockquote {
+  font-size: clamp(1.28rem, 2.25vw, 1.7rem);
+}
+
+.heading-card .card-resize-handle {
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+.heading-card:hover .card-resize-handle,
+.heading-card.is-selected .card-resize-handle {
+  opacity: 0.56;
+}

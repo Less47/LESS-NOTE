@@ -1,0 +1,83 @@
+.card-note-editor.is-preview-mode {
+  cursor: inherit;
+  user-select: none;
+  caret-color: transparent;
+}
+
+.card-note-editor.is-preview-mode * {
+  cursor: inherit;
+  user-select: none;
+}
+
+.card-note-editor.is-editing {
+  cursor: text;
+  user-select: text;
+}
+
+.note-hex-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34em;
+  vertical-align: baseline;
+}
+
+.note-hex-swatch {
+  width: 0.72em;
+  height: 0.72em;
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, white 18%, transparent);
+}
+
+.note-hex-value {
+  white-space: nowrap;
+}
+
+.column-title-surface {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.column-title-input.is-preview-mode,
+.link-url-input.is-preview-mode {
+  cursor: inherit;
+  user-select: none;
+  pointer-events: none;
+  caret-color: transparent;
+}
+
+.column-title-input.is-editing,
+.link-url-input.is-editing {
+  cursor: text;
+  user-select: text;
+  pointer-events: auto;
+}
+
+.table-title-input.is-preview-mode,
+.table-cell-input.is-preview-mode {
+  user-select: none;
+  caret-color: transparent;
+}
+
+.table-title-input.is-editing,
+.table-cell-input.is-editing {
+  cursor: text;
+  user-select: text;
+}
+
+.todo-text-surface {
+  min-width: 0;
+}
+
+.todo-item-input.is-preview-mode {
+  cursor: inherit;
+  user-select: none;
+  pointer-events: none;
+  caret-color: transparent;
+}
+
+.todo-item-input.is-editing {
+  cursor: text;
+  user-select: text;
+  pointer-events: auto;
+}

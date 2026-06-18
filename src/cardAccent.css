@@ -1,0 +1,14 @@
+.note-card::before,
+.todo-card::before,
+.link-card::before,
+.column-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 0.22rem;
+  background: var(--card-top-accent, transparent);
+  pointer-events: none;
+}

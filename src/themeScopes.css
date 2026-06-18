@@ -1,0 +1,49 @@
+.sidebar-stage {
+  --app-text: var(--sidebar-text, var(--app-text));
+  --app-muted-text: var(--sidebar-muted-text, var(--app-muted-text));
+  --app-border: var(--sidebar-border, var(--app-border));
+  --app-border-strong: var(--sidebar-border-strong, var(--app-border-strong));
+  --app-focus-ring: var(--sidebar-focus-ring, var(--app-focus-ring));
+  --surface-bg: var(--sidebar-surface-bg, var(--surface-bg));
+  --surface-hover-bg: var(--sidebar-surface-hover-bg, var(--surface-hover-bg));
+  --surface-active-bg: var(--sidebar-surface-active-bg, var(--surface-active-bg));
+  --surface-icon-start: var(--sidebar-surface-icon-start, var(--surface-icon-start));
+  --surface-icon-end: var(--sidebar-surface-icon-end, var(--surface-icon-end));
+  --surface-shadow: var(--sidebar-surface-shadow, var(--surface-shadow));
+  --panel-bg: var(--sidebar-panel-bg, var(--panel-bg));
+  --panel-inset: var(--sidebar-panel-inset, var(--panel-inset));
+  --switch-bg: var(--sidebar-switch-bg, var(--switch-bg));
+  --switch-track-off: var(--sidebar-switch-track-off, var(--switch-track-off));
+  --switch-track-on: var(--sidebar-switch-track-on, var(--switch-track-on));
+  --switch-thumb: var(--sidebar-switch-thumb, var(--switch-thumb));
+  --input-bg: var(--sidebar-input-bg, var(--input-bg));
+  --input-bg-strong: var(--sidebar-input-bg-strong, var(--input-bg-strong));
+  --input-border: var(--sidebar-input-border, var(--input-border));
+  --range-track: var(--sidebar-range-track, var(--range-track));
+  --range-fill: var(--sidebar-range-fill, var(--range-fill));
+}
+
+.workspace-stage {
+  --app-text: var(--workspace-text, var(--app-text));
+  --app-muted-text: var(--workspace-muted-text, var(--app-muted-text));
+  --app-border: var(--workspace-border, var(--app-border));
+  --app-border-strong: var(--workspace-border-strong, var(--app-border-strong));
+  --app-focus-ring: var(--workspace-focus-ring, var(--app-focus-ring));
+  --surface-bg: var(--workspace-surface-bg, var(--surface-bg));
+  --surface-hover-bg: var(--workspace-surface-hover-bg, var(--surface-hover-bg));
+  --surface-active-bg: var(--workspace-surface-active-bg, var(--surface-active-bg));
+  --surface-icon-start: var(--workspace-surface-icon-start, var(--surface-icon-start));
+  --surface-icon-end: var(--workspace-surface-icon-end, var(--surface-icon-end));
+  --surface-shadow: var(--workspace-surface-shadow, var(--surface-shadow));
+  --panel-bg: var(--workspace-panel-bg, var(--panel-bg));
+  --panel-inset: var(--workspace-panel-inset, var(--panel-inset));
+  --switch-bg: var(--workspace-switch-bg, var(--switch-bg));
+  --switch-track-off: var(--workspace-switch-track-off, var(--switch-track-off));
+  --switch-track-on: var(--workspace-switch-track-on, var(--switch-track-on));
+  --switch-thumb: var(--workspace-switch-thumb, var(--switch-thumb));
+  --input-bg: var(--workspace-input-bg, var(--input-bg));
+  --input-bg-strong: var(--workspace-input-bg-strong, var(--input-bg-strong));
+  --input-border: var(--workspace-input-border, var(--input-border));
+  --range-track: var(--workspace-range-track, var(--range-track));
+  --range-fill: var(--workspace-range-fill, var(--range-fill));
+}

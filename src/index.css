@@ -1,0 +1,357 @@
+:root {
+  font-family: 'Trebuchet MS', 'Segoe UI Variable Text', 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #1d2d28;
+  background: #f3ece1;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100svh;
+}
+
+body {
+  overflow: hidden;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+textarea {
+  resize: none;
+}
+
+h1,
+h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+}
+
+.workspace-board-tools {
+  z-index: 7;
+  pointer-events: none;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 12rem;
+  display: flex;
+}
+
+.board-tabs-row {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.board-tabs {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  overflow-x: auto;
+  padding: 0.12rem;
+  scrollbar-width: thin;
+}
+
+.board-tab,
+.board-create-button,
+.board-delete-button {
+  appearance: none;
+  border: 1px solid var(--input-border);
+  background: var(--surface-bg);
+  color: var(--app-text);
+  border-radius: 999px;
+  box-shadow: var(--surface-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition:
+    transform 0.16s ease,
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    box-shadow 0.16s ease,
+    color 0.16s ease,
+    opacity 0.16s ease;
+}
+
+.board-tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.2rem;
+  padding: 0.42rem 0.7rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.board-tab.is-icon-only {
+  flex: none;
+  justify-content: center;
+  width: 2.2rem;
+  padding: 0;
+}
+
+.board-tab:hover,
+.board-create-button:hover,
+.board-delete-button:hover {
+  border-color: var(--app-border-strong);
+  transform: translateY(-1px);
+}
+
+.board-tab:focus-visible,
+.board-create-button:focus-visible,
+.board-delete-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--app-focus-ring), var(--surface-shadow);
+}
+
+.board-tab.is-active {
+  border-color: var(--app-border-strong);
+  background: var(--surface-active-bg);
+  box-shadow: 0 0 0 2px var(--app-focus-ring), var(--surface-shadow);
+}
+
+.board-tab-input {
+  width: auto;
+  max-width: 14rem;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.board-tab-label {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.board-tab-icon {
+  display: grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+}
+
+.board-tab-icon svg {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+}
+
+.board-tab-input:focus {
+  outline: none;
+}
+
+.board-tab-input::placeholder {
+  color: var(--app-muted-text);
+  opacity: 1;
+}
+
+.board-tab:not(.is-active) .board-tab-input {
+  pointer-events: none;
+  user-select: none;
+}
+
+.board-create-button,
+.board-delete-button {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
+  cursor: pointer;
+  color: var(--app-muted-text);
+  background: transparent;
+  box-shadow: none;
+  opacity: 0.72;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.board-create-button:hover,
+.board-delete-button:hover {
+  background: var(--surface-bg);
+  box-shadow: var(--surface-shadow);
+  opacity: 0.96;
+}
+
+.board-delete-button:hover {
+  color: #8b4a3d;
+}
+
+.board-delete-button:disabled {
+  cursor: default;
+  opacity: 0.34;
+  transform: none;
+}
+
+.canvas-viewport.is-connect-ready {
+  cursor: crosshair;
+}
+
+.board-connector-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.canvas-world {
+  z-index: 2;
+}
+
+.canvas-viewport.is-connect-ready .board-card {
+  cursor: crosshair;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.canvas-viewport.is-connect-ready .board-card :is(input, textarea, button, a) {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.canvas-viewport.is-connect-ready .card-note-editor,
+.canvas-viewport.is-connect-ready .card-image-caption {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.canvas-viewport.is-connect-ready .card-resize-handle {
+  opacity: 0.18;
+}
+
+.board-connector-line,
+.board-connector-underlay,
+.board-connector-outline,
+.board-connector-preview,
+.board-connector-hit-target {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.board-connector-line {
+  stroke: var(--range-fill);
+  stroke-width: 2.6px;
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.board-connector-line.is-selected {
+  opacity: 1;
+}
+
+.board-connector-underlay {
+  stroke: var(--canvas-inset);
+  stroke-width: 8px;
+  pointer-events: none;
+}
+
+.board-connector-outline {
+  stroke: var(--app-text);
+  stroke-width: 4px;
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+.board-connector-preview {
+  stroke: var(--app-muted-text);
+  stroke-width: 2.4px;
+  stroke-dasharray: 8 7;
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.board-connector-hit-target {
+  stroke: transparent;
+  stroke-width: 18px;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.board-connector-layer.is-disabled .board-connector-hit-target {
+  pointer-events: none;
+}
+
+.board-card.is-connector-hovered {
+  box-shadow: 0 0 0 2px rgba(25, 79, 71, 0.44), 0 24px 40px rgba(24, 32, 29, 0.18);
+}
+
+.board-card.is-connector-source {
+  box-shadow: 0 0 0 2px var(--range-fill), 0 24px 40px rgba(24, 32, 29, 0.18);
+}
+
+.warning-modal {
+  width: min(24rem, 100%);
+}
+
+.warning-copy {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.warning-copy--muted {
+  color: var(--app-muted-text);
+}
+
+.settings-button.is-danger {
+  border-color: transparent;
+  background: rgba(139, 74, 61, 0.12);
+  color: #8b4a3d;
+}
+
+.settings-button.is-danger:hover {
+  border-color: rgba(139, 74, 61, 0.24);
+}
+
+@media (width <= 980px) {
+  .workspace-board-tools {
+    right: 10.5rem;
+  }
+}
+
+@media (width <= 640px) {
+  .workspace-board-tools {
+    top: 4rem;
+    left: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .board-tabs {
+    padding: 0.08rem;
+  }
+}
