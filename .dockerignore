@@ -1,1 +1,15 @@
+.git
+.gitignore
+.env
+.env.*
+!.env.example
 fly.toml
+node_modules
+dist
+.cargo-target
+.desktop-targets
+.tmp-chrome-profile
+test-results
+src-tauri/target
+src-tauri/gen
+src-tauri/.cargo-target

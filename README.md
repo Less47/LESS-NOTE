@@ -28,13 +28,81 @@ Desktop-related files now live here:
 Useful scripts:
 
 - `npm run dev`  
-  browser-only Vite dev server
+  starts the Vite client and the Better Auth / workspace API server
 - `npm run dev:desktop`  
   fixed-port Vite dev server for Tauri
 - `npm run desktop:dev`  
-  starts the Tauri desktop app in development
+  starts the Tauri desktop app in local-only mode
 - `npm run desktop:build`  
-  builds an installable desktop app
+  builds an installable desktop app in local-only mode
+- `npm run start`  
+  serves the built web app plus auth/API from the Node server
+
+## Auth and per-user boards
+
+The web app now uses Better Auth for email/password login and stores each user's workspace on the server instead of in browser-only storage.
+
+Main pieces:
+
+- [server/auth.js](/e:/LESS-NOTE/server/auth.js)
+- [server/index.js](/e:/LESS-NOTE/server/index.js)
+- [server/workspaceStore.js](/e:/LESS-NOTE/server/workspaceStore.js)
+- [src/auth/authClient.ts](/e:/LESS-NOTE/src/auth/authClient.ts)
+- [src/components/auth/AuthScreen.tsx](/e:/LESS-NOTE/src/components/auth/AuthScreen.tsx)
+
+Environment variables live in [.env.example](/e:/LESS-NOTE/.env.example):
+
+- `DATABASE_URL`
+- `BETTER_AUTH_SECRET`
+- `BETTER_AUTH_URL`
+- `CLIENT_ORIGINS`
+- `VITE_API_BASE_URL`  
+  local browser development only; leave unset in same-origin production
+
+Local web development:
+
+```powershell
+copy .env.example .env
+npm install
+npm run dev
+```
+
+That starts:
+
+1. Vite on `http://127.0.0.1:5173`
+2. the Better Auth and workspace API server on `http://127.0.0.1:8787`
+
+Desktop mode intentionally keeps auth off for now and still uses local-only persistence:
+
+```powershell
+npm run desktop:dev
+```
+
+## Deploying the web app to Fly.io
+
+Fly now runs the Node server, not a static nginx container.
+
+Files involved:
+
+- [Dockerfile](/e:/LESS-NOTE/Dockerfile)
+- [fly.toml](/e:/LESS-NOTE/fly.toml)
+- [.dockerignore](/e:/LESS-NOTE/.dockerignore)
+
+Before deploying, make sure Fly has:
+
+- a PostgreSQL `DATABASE_URL`
+- a strong `BETTER_AUTH_SECRET`
+- `BETTER_AUTH_URL=https://less-note.fly.dev`  
+  or your real app domain
+
+Typical flow:
+
+```powershell
+fly secrets set DATABASE_URL=... BETTER_AUTH_SECRET=... BETTER_AUTH_URL=https://less-note.fly.dev
+fly deploy
+```
+
+The container serves the web app and API on port `8080`.
 
 ## What you still need to install on Windows
 

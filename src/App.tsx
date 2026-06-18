@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react'
 import './App.css'
+import { authClient } from './auth/authClient'
 import './todoDrag.css'
 import './cardAccent.css'
 import './calendar.css'
@@ -20,6 +21,8 @@ import './workspaceCornerTools.css'
 import './boardVisualTweaks.css'
 import './contextMenu.css'
 import './document.css'
+import './workspaceAccount.css'
+import AuthScreen from './components/auth/AuthScreen'
 import BoardTabs from './components/workspace/BoardTabs'
 import DocumentPreviewModal from './components/workspace/DocumentPreviewModal'
 import FileUploadWarningModal from './components/workspace/FileUploadWarningModal'
@@ -149,6 +152,7 @@ const {
   normalizeImageCrop,
   normalizeMeasuredCardSize,
   normalizeRichNoteHtml,
+  normalizeWorkspace,
   queryRichTextCommandState,
   remapWorkspaceRichTextColorsForTheme,
   resizeTableCard,
@@ -218,8 +222,25 @@ function getClipboardTableMatrix(clipboardData: DataTransfer) {
 }
 
 type SelectionSidebarMode = 'card' | 'text'
+type WorkspaceSyncState = 'local' | 'saving' | 'saved' | 'error'
+type RemoteWorkspaceState =
+  | { status: 'idle' | 'loading' }
+  | { status: 'ready'; workspace: WorkspaceSnapshot }
+  | { status: 'error'; message: string }
+
+type WorkspaceAppProps = {
+  initialWorkspace: WorkspaceSnapshot
+  persistWorkspace?: ((workspace: WorkspaceSnapshot) => Promise<void> | void) | null
+  accountLabel?: string | null
+  accountEmail?: string | null
+  onSignOut?: (() => Promise<void>) | null
+  workspaceSyncState?: WorkspaceSyncState
+}
+
 const BOARD_VIEWPORT_RECOVERY_VERSION = 2
 const BOARD_TAB_CARD_TRANSFER_DELAY_MS = 450
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim().replace(/\/$/, '') ?? ''
+const isAuthEnabled = import.meta.env.VITE_ENABLE_AUTH !== 'false'
 
 type TodoItemDragState = {
   sourceCardId: string
@@ -265,8 +286,66 @@ function areTodoItemDropTargetsEqual(
   )
 }
 
-function App() {
-  const [workspace, setWorkspace] = useState<WorkspaceSnapshot>(() => loadWorkspace())
+function buildApiUrl(path: string) {
+  return apiBaseUrl ? `${apiBaseUrl}${path}` : path
+}
+
+function getRequestErrorMessage(error: unknown, fallback: string) {
+  if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
+    return error.message
+  }
+
+  return fallback
+}
+
+async function loadRemoteWorkspace() {
+  const response = await fetch(buildApiUrl('/api/workspace'), {
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      response.status === 401
+        ? 'Your session expired. Please sign in again.'
+        : 'Unable to load your boards right now.',
+    )
+  }
+
+  const payload = (await response.json()) as {
+    workspace?: unknown
+  }
+
+  return normalizeWorkspace(payload.workspace)
+}
+
+async function saveRemoteWorkspace(workspace: WorkspaceSnapshot) {
+  const response = await fetch(buildApiUrl('/api/workspace'), {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({ workspace }),
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      response.status === 401
+        ? 'Your session expired. Please sign in again.'
+        : 'Unable to save your boards right now.',
+    )
+  }
+}
+
+function WorkspaceApp({
+  initialWorkspace,
+  persistWorkspace = null,
+  accountLabel = null,
+  accountEmail = null,
+  onSignOut = null,
+  workspaceSyncState = 'local',
+}: WorkspaceAppProps) {
+  const [workspace, setWorkspace] = useState<WorkspaceSnapshot>(() => initialWorkspace)
   const [appSettings, setAppSettings] = useState<AppSettings>(() => loadAppSettings())
   const [isSnapToGrid, setIsSnapToGrid] = useState(() => loadSnapToGridPreference())
   const [selectedCardIds, setSelectedCardIds] = useState<string[]>([])
@@ -446,6 +525,11 @@ function App() {
     if (workspacePersistTimeoutRef.current !== null) {
       window.clearTimeout(workspacePersistTimeoutRef.current)
       workspacePersistTimeoutRef.current = null
+    }
+
+    if (persistWorkspace) {
+      void persistWorkspace(workspaceRef.current)
+      return
     }
 
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(workspaceRef.current))
@@ -4422,6 +4506,14 @@ function App() {
   const hasBoardContextMenuCopyAction =
     (boardContextMenu?.selectionCardIds.length ?? 0) > 0
   const hasBoardContextMenuPasteAction = hasCopiedBoardSelection
+  const workspaceSyncLabel =
+    workspaceSyncState === 'saving'
+      ? 'Saving...'
+      : workspaceSyncState === 'saved'
+      ? 'Saved'
+      : workspaceSyncState === 'error'
+      ? 'Save issue'
+      : 'Local mode'
 
   return (
     <div className="app-shell" style={appThemeStyle}>
@@ -4512,6 +4604,24 @@ function App() {
       />
 
       <main className="workspace-stage">
+        {accountLabel ? (
+          <div className="workspace-account-panel">
+            <div className="workspace-account-copy">
+              <strong>{accountLabel}</strong>
+              <span>{accountEmail ?? workspaceSyncLabel}</span>
+            </div>
+            <div className="workspace-account-actions">
+              <span className={`workspace-sync-pill is-${workspaceSyncState}`}>
+                {workspaceSyncLabel}
+              </span>
+              {onSignOut ? (
+                <button type="button" onClick={() => void onSignOut()}>
+                  Sign out
+                </button>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
         {!isCalendarTabActive ? (
           <WorkspaceCornerTools
             isSnapToGrid={isSnapToGrid}
@@ -4662,6 +4772,154 @@ function App() {
         onUploadBackup={openBackupImportPicker}
       />
     </div>
+  )
+}
+
+function App() {
+  const { data: sessionData, isPending, error, refetch } = authClient.useSession()
+  const [remoteWorkspace, setRemoteWorkspace] = useState<RemoteWorkspaceState>({
+    status: 'idle',
+  })
+  const [workspaceSyncState, setWorkspaceSyncState] = useState<WorkspaceSyncState>('saved')
+
+  const loadWorkspaceForUser = useCallback(async () => {
+    setRemoteWorkspace({ status: 'loading' })
+
+    try {
+      const workspace = await loadRemoteWorkspace()
+      setRemoteWorkspace({ status: 'ready', workspace })
+      setWorkspaceSyncState('saved')
+    } catch (loadError) {
+      setRemoteWorkspace({
+        status: 'error',
+        message: getRequestErrorMessage(loadError, 'Unable to load your boards right now.'),
+      })
+      setWorkspaceSyncState('error')
+    }
+  }, [])
+
+  const handlePersistWorkspace = useCallback(async (workspace: WorkspaceSnapshot) => {
+    setWorkspaceSyncState('saving')
+
+    try {
+      await saveRemoteWorkspace(workspace)
+      setWorkspaceSyncState('saved')
+    } catch {
+      setWorkspaceSyncState('error')
+    }
+  }, [])
+
+  const handleSignOut = useCallback(async () => {
+    await authClient.signOut()
+    setRemoteWorkspace({ status: 'idle' })
+    setWorkspaceSyncState('saved')
+  }, [])
+
+  const handleRetry = useCallback(() => {
+    if (!sessionData?.user?.id) {
+      void refetch()
+      return
+    }
+
+    void loadWorkspaceForUser()
+  }, [loadWorkspaceForUser, refetch, sessionData?.user?.id])
+
+  useEffect(() => {
+    if (!isAuthEnabled || !sessionData?.user?.id) {
+      return
+    }
+
+    const loadTimeout = window.setTimeout(() => {
+      void loadWorkspaceForUser()
+    }, 0)
+
+    return () => {
+      window.clearTimeout(loadTimeout)
+    }
+  }, [loadWorkspaceForUser, sessionData?.user?.id])
+
+  if (!isAuthEnabled) {
+    return (
+      <WorkspaceApp
+        initialWorkspace={loadWorkspace()}
+        workspaceSyncState="local"
+      />
+    )
+  }
+
+  if (isPending) {
+    return (
+      <AuthScreen
+        isLoading
+        title="Checking your session"
+        message="Connecting to LESS NOTE and looking for your account."
+      />
+    )
+  }
+
+  if (error) {
+    return (
+      <AuthScreen
+        isLoading
+        title="Authentication is unavailable"
+        message="The app could not reach the Better Auth server yet."
+        errorMessage={getRequestErrorMessage(error, 'Please check the server and try again.')}
+        onRetry={() => {
+          void refetch()
+        }}
+      />
+    )
+  }
+
+  if (!sessionData?.user) {
+    return <AuthScreen />
+  }
+
+  if (remoteWorkspace.status === 'idle' || remoteWorkspace.status === 'loading') {
+    return (
+      <AuthScreen
+        isLoading
+        title="Loading your boards"
+        message="Pulling your workspace from the server."
+      />
+    )
+  }
+
+  if (remoteWorkspace.status === 'error') {
+    return (
+      <AuthScreen
+        isLoading
+        title="We hit a snag"
+        message="Your account is ready, but the workspace request failed."
+        errorMessage={remoteWorkspace.message}
+        onRetry={handleRetry}
+      />
+    )
+  }
+
+  const loadedWorkspace =
+    remoteWorkspace.status === 'ready' ? remoteWorkspace.workspace : null
+
+  if (!loadedWorkspace) {
+    return (
+      <AuthScreen
+        isLoading
+        title="Loading your boards"
+        message="Pulling your workspace from the server."
+      />
+    )
+  }
+
+  return (
+    <WorkspaceApp
+      key={sessionData.user.id}
+      initialWorkspace={loadedWorkspace}
+      persistWorkspace={handlePersistWorkspace}
+      accountLabel={sessionData.user.name || sessionData.user.email}
+      accountEmail={sessionData.user.email}
+      onSignOut={handleSignOut}
+      workspaceSyncState={workspaceSyncState}
+    />
   )
 }
 
